@@ -10,8 +10,9 @@ GitHub username: nicolemendes
 	Linguagem: C
 	Ambiente de desenvolvimento: NetBeans IDE 8.0.2
 	Compilador: GCC 4.9.3 64bits
-	Bibliotecas: stdio.h, stdlib.h e arvorebinaria.h
-	Códigos fonte, executáveis e entradas exemplo de todos os programas estão no repositório do trabalho.
+	Bibliotecas: stdio.h, stdlib.h, arvorebinaria.h e arvoregenealogica.h
+	Códigos fonte, bibliotecas, executáveis e entradas exemplo de todos os programas estão no repositório do trabalho.
+
 
 
 

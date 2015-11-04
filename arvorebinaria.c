@@ -9,8 +9,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-
-
+/**
+ * Metodo que aloca uma arvore binaria
+ * 
+ * @return arvore binaria
+ */
 ARVORE_BINARIA *AB_CriarArvore() {
     ARVORE_BINARIA *ab = malloc(sizeof (ARVORE_BINARIA));
 
@@ -21,6 +24,13 @@ ARVORE_BINARIA *AB_CriarArvore() {
     return ab;
 }
 
+/**
+ * Metodo que aloca o no raiz da arvore
+ * @param pArvore
+ * @param chave
+ * @param dado
+ * @return no raiz
+ */
 NOB *AB_CriarRaiz(ARVORE_BINARIA *pArvore, int chave, int dado) {
     NOB *no = malloc(sizeof (NOB));
 
@@ -37,6 +47,14 @@ NOB *AB_CriarRaiz(ARVORE_BINARIA *pArvore, int chave, int dado) {
     return no;
 }
 
+/**
+ * Metodo que insere um no novo na arvore
+ * @param iFilho
+ * @param pNo
+ * @param chave
+ * @param dado
+ * @return no inserido
+ */
 NOB *AB_InserirFilho(int iFilho, NOB *pNo, int chave, int dado) {
     NOB *no = malloc(sizeof (NOB));
 
@@ -56,6 +74,12 @@ NOB *AB_InserirFilho(int iFilho, NOB *pNo, int chave, int dado) {
     return no;
 }
 
+/**
+ * Remove um no dado uma chave
+ * @param pArvore
+ * @param chave
+ * @return 1 true, 0 false
+ */
 int AB_RemoverNo(ARVORE_BINARIA *pArvore, int chave) {
     NOB *p = pArvore->pRaiz;
     NOB *pai = NULL;
@@ -77,7 +101,7 @@ int AB_RemoverNo(ARVORE_BINARIA *pArvore, int chave) {
     while (m != NULL && m->pFilhoEsq != NULL) {
         m = m->pFilhoEsq;
     }
-    
+
     NOB *n;
     if (m != NULL) {
         m -> pFilhoEsq = p -> pFilhoEsq;
@@ -91,10 +115,14 @@ int AB_RemoverNo(ARVORE_BINARIA *pArvore, int chave) {
         pai->pFilhoEsq = n;
     }
     free(p);
-    
-    return(1);
+
+    return (1);
 }
 
+/**
+ * Desaloca a arvore a partir de um no raiz
+ * @param raiz da arvore
+ */
 void apagar_arvore_aux(NOB *raiz) {
     if (raiz) {
 
@@ -111,10 +139,14 @@ void apagar_arvore_aux(NOB *raiz) {
         apagar_arvore_aux(dir);
 
     }
-    
+
     return;
 }
 
+/**
+ * Desaloca a arvore
+ * @param pArvore
+ */
 void AB_ApagarArvore(ARVORE_BINARIA **pArvore) {
     apagar_arvore_aux((*pArvore)->pRaiz);
     free(*pArvore);
@@ -122,6 +154,13 @@ void AB_ApagarArvore(ARVORE_BINARIA **pArvore) {
 
 }
 
+/**
+ * Insere um novo no na arvore
+ * @param pArvore
+ * @param chave
+ * @param dado
+ * @return no alocado
+ */
 NOB *AB_InserirNO(ARVORE_BINARIA *pArvore, int chave, int dado) {
     if (pArvore->pRaiz) {
         NOB *p = pArvore->pRaiz;
@@ -146,16 +185,23 @@ NOB *AB_InserirNO(ARVORE_BINARIA *pArvore, int chave, int dado) {
     } else {
         return AB_CriarRaiz(pArvore, chave, dado);
     }
-    
+
     return NULL;
 }
 
-
-
+/**
+ * Verifica se a arvore esta vazia
+ * @param pArvore
+ * @return != 0 true, 0/NULL false
+ */
 int AB_Vazia(ARVORE_BINARIA *pArvore) {
     return (pArvore->pRaiz == NULL);
 }
 
+/**
+ * Imprime a arvoe EM ORDEM
+ * @param pRaiz
+ */
 void AB_ImprimirEmOrdem_Aux(NOB *pRaiz) {
     if (pRaiz != NULL) {
         AB_ImprimirEmOrdem_Aux(pRaiz->pFilhoEsq);
@@ -164,48 +210,73 @@ void AB_ImprimirEmOrdem_Aux(NOB *pRaiz) {
 
         AB_ImprimirEmOrdem_Aux(pRaiz->pFilhoDir);
     }
-    
+
     return;
 }
 
+/**
+ * Imprime a arvore em ORDEM
+ * @param pArvore
+ */
 void AB_ImprimirEmOrdem(ARVORE_BINARIA *pArvore) {
     AB_ImprimirEmOrdem_Aux(pArvore->pRaiz);
-    
+
     return;
 }
 
+/**
+ * Imprime a arvore em PRE ORDEM
+ * @param pRaiz
+ */
 void AB_ImprimirPreOrdem_Aux(NOB *pRaiz) {
     if (pRaiz != NULL) {
         printf("[%d][%d]->", pRaiz->chave, pRaiz->dado);
         AB_ImprimirPreOrdem_Aux(pRaiz->pFilhoEsq);
         AB_ImprimirPreOrdem_Aux(pRaiz->pFilhoDir);
     }
-    
+
     return;
 }
 
+/**
+ * Imprime a arvore em PRE ORDEM
+ * @param pArvore
+ */
 void AB_ImprimirPreOrdem(ARVORE_BINARIA *pArvore) {
     AB_ImprimirPreOrdem_Aux(pArvore->pRaiz);
-    
+
     return;
 }
 
+/**
+ * Imprime a arvore em POS ORDEM
+ * @param pRaiz
+ */
 void AB_ImprimirPosOrdem_Aux(NOB *pRaiz) {
     if (pRaiz != NULL) {
         AB_ImprimirPosOrdem_Aux(pRaiz->pFilhoEsq);
         AB_ImprimirPosOrdem_Aux(pRaiz->pFilhoDir);
         printf("[%d][%d]->", pRaiz->chave, pRaiz->dado);
     }
-    
+
     return;
 }
 
+/**
+ * Imprime a arvore em POS ORDEM
+ * @param pArvore
+ */
 void AB_ImprimirPosOrdem(ARVORE_BINARIA *pArvore) {
     AB_ImprimirPosOrdem_Aux(pArvore->pRaiz);
-    
+
     return;
 }
 
+/**
+ * Calcula a altura da arvore
+ * @param pRaiz
+ * @return altura
+ */
 int AB_AlturaArvore_Aux(NOB *pRaiz) {
     if (pRaiz == NULL) {
         return -1;
@@ -216,29 +287,48 @@ int AB_AlturaArvore_Aux(NOB *pRaiz) {
     }
 }
 
+/**
+ * Calcula a altura da arvore
+ * @param pArvore
+ * @return altura
+ */
 int AB_AlturaArvore(ARVORE_BINARIA *pArvore) {
     return AB_AlturaArvore_Aux(pArvore->pRaiz);
 }
 
-void AB_ImprimirLabelledBracketing_Aux(NOB *pRaiz){
+/**
+ * Imprime a arvore em Labelled Bracketing
+ * @param pRaiz
+ */
+void AB_ImprimirLabelledBracketing_Aux(NOB *pRaiz) {
     printf("[");
-    
-    if(pRaiz!=NULL){
-        printf("%d",pRaiz->dado);
-        
+
+    if (pRaiz != NULL) {
+        printf("%d", pRaiz->dado);
+
         AB_ImprimirLabelledBracketing_Aux(pRaiz->pFilhoEsq);
         AB_ImprimirLabelledBracketing_Aux(pRaiz->pFilhoDir);
     }
-        
+
     printf(" ]");
-    
+
     return;
 }
 
-void AB_ImprimirLabelledBracketing(ARVORE_BINARIA *pArvore){
+/**
+ * Imprime a arvore em Labelled Bracketing
+ * @param pArvore
+ */
+void AB_ImprimirLabelledBracketing(ARVORE_BINARIA *pArvore) {
     return AB_ImprimirLabelledBracketing_Aux(pArvore->pRaiz);
 }
 
+/**
+ * 
+ * @param pRaiz
+ * @param chave
+ * @return 
+ */
 NOB *AB_BuscarElemento(NOB *pRaiz, int chave) {
     if (pRaiz != NULL) {
         if (pRaiz->chave == chave) {

@@ -10,6 +10,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+/**
+ * Aloca espaco para arvore genealogica
+ * @return arvore alocada / NULL
+ */
 ARVORE_GENEALOGICA *AG_CriarArvore() {
     ARVORE_GENEALOGICA *ab = malloc(sizeof (ARVORE_GENEALOGICA));
 
@@ -20,6 +24,14 @@ ARVORE_GENEALOGICA *AG_CriarArvore() {
     return ab;
 }
 
+/**
+ * Cria a raiz da arvore
+ * @param pArvore
+ * @param filho
+ * @param pai
+ * @param mae
+ * @return no
+ */
 NOG *AG_CriarRaiz(ARVORE_GENEALOGICA *pArvore, char* filho, char* pai, char* mae) {
     NOG *no = malloc(sizeof (NOG));
     NOG *noPai = malloc(sizeof (NOG));
@@ -46,6 +58,14 @@ NOG *AG_CriarRaiz(ARVORE_GENEALOGICA *pArvore, char* filho, char* pai, char* mae
     return no;
 }
 
+/**
+ * Funcao que verifica o local onde sera inserido o no
+ * @param pArvore
+ * @param filho
+ * @param pai
+ * @param mae
+ * @return no
+ */
 NOG *AG_InserirNO(ARVORE_GENEALOGICA *pArvore, char* filho, char* pai, char* mae) {
     if (pArvore->pRaiz) {
 
@@ -80,10 +100,21 @@ NOG *AG_InserirNO(ARVORE_GENEALOGICA *pArvore, char* filho, char* pai, char* mae
     }
 }
 
+/**
+ * Verificar se a arvore esta vazia
+ * @param pArvore
+ * @return != 0 true, 0/NULL false
+ */
 int AG_Vazia(ARVORE_GENEALOGICA *pArvore) {
     return (pArvore->pRaiz == NULL);
 }
 
+/**
+ * Busca um no pelo nome
+ * @param pRaiz
+ * @param nome
+ * @return no se encontrado, null se falso
+ */
 NOG *AG_Buscar(NOG *pRaiz, char *nome) {
     if (pRaiz != NULL) {
         if (strcmp(pRaiz->nome, nome) == 0) {
@@ -118,6 +149,10 @@ void AG_Apagar_Arvore_Aux(NOG *raiz) {
     return;
 }
 
+/**
+ * Apaga a arvore genealogica
+ * @param pArvore
+ */
 void AG_ApagarArvore(ARVORE_GENEALOGICA **pArvore) {
     apagar_arvore_aux((*pArvore)->pRaiz);
     free(*pArvore);
@@ -141,6 +176,10 @@ void AG_ImprimirLabelledBracketing_Aux(NOG *pRaiz) {
     return;
 }
 
+/**
+ * imprime a arvore em Labelled Bracketing
+ * @param pArvore
+ */
 void AG_ImprimirLabelledBracketing(ARVORE_GENEALOGICA *pArvore) {
     AG_ImprimirLabelledBracketing_Aux(pArvore->pRaiz);
 
@@ -157,10 +196,20 @@ int AG_AlturaArvore_Aux(NOG *pRaiz) {
     }
 }
 
+/**
+ * Calcula a altura da arvore
+ * @param pArvore
+ * @return altura
+ */
 int AG_AlturaArvore(ARVORE_GENEALOGICA *pArvore) {
     return AB_AlturaArvore_Aux(pArvore->pRaiz);
 }
 
+/**
+ * Calcula a altura de um no
+ * @param pNo
+ * @return altura
+ */
 int AG_AlturaNo(NOG *pNo) {
     return AG_AlturaArvore_Aux(pNo);
 }
@@ -171,12 +220,18 @@ int AG_ProfundidadeNO_Aux(NOG *pRaiz, NOG *pNo, int i) {
     } else if (pRaiz == pNo) {
         return i;
     } else {
-        int pai = AB_ProfundidadeNO_Aux(pRaiz->pPai, pNo, i + 1);
-        int mae = AB_ProfundidadeNO_Aux(pRaiz->pMae, pNo, i + 1);
+        int pai = AG_ProfundidadeNO_Aux(pRaiz->pPai, pNo, i + 1);
+        int mae = AG_ProfundidadeNO_Aux(pRaiz->pMae, pNo, i + 1);
         return (pai > mae ? pai : mae);
     }
 }
 
+/**
+ * Calcula a profundidade de um noa ate a razi
+ * @param pRaiz
+ * @param pNo
+ * @return profundidade
+ */
 int AG_ProfundidadeNo(NOG *pRaiz, NOG *pNo) {
     if (pRaiz == NULL) {
         return -1;
@@ -201,6 +256,10 @@ void AG_ImprimirGeracao_Aux(NOG *noRaiz, NOG *no, int i) {
     return;
 }
 
+/**
+ * Imprime a arvore por geracao
+ * @param pArvore
+ */
 void AG_ImprimirGeracao(ARVORE_GENEALOGICA *pArvore) {
     //descobre a altura maxima da arvore
     int altura = AG_AlturaArvore(pArvore);
@@ -215,6 +274,11 @@ void AG_ImprimirGeracao(ARVORE_GENEALOGICA *pArvore) {
     return;
 }
 
+/**
+ * Imprime a geracao a partir de um indiduo
+ * @param pArvore
+ * @param nome
+ */
 void AG_ImprimirAntepassados(ARVORE_GENEALOGICA *pArvore, char *nome) {
     NOG *no = AG_Buscar(pArvore->pRaiz, nome);
 
@@ -228,12 +292,22 @@ void AG_ImprimirAntepassados(ARVORE_GENEALOGICA *pArvore, char *nome) {
     }
 }
 
+/**
+ * Calcula o grau de parentesco
+ * @param pArvore
+ * @param individuo1
+ * @param individuo2
+ * @return grau
+ */
 int AG_CalcularGrauParentesco(ARVORE_GENEALOGICA *pArvore, char *individuo1, char *individuo2) {
     NOG *no1 = AG_Buscar(pArvore->pRaiz, individuo1);
     NOG *no2 = AG_Buscar(pArvore->pRaiz, individuo2);
 
     if (no1 && no2) {
-        int grau = AG_ProfundidadeNo(no1, no2);
+        int grau1 = AG_ProfundidadeNo(no1, no2);
+        int grau2 = AG_ProfundidadeNo(no2, no1);
+
+        int grau = (grau1 > grau2 ? grau1 : grau2);
 
         return (grau > 0 ? grau : 0);
     } else {
